@@ -1,5 +1,6 @@
 CC=gcc
 FLAGS=-Wall -Werror
+TESTS=./tests/
 
 run : run.o Tree.o
 		$(CC) -o run run.o Tree.o
@@ -12,3 +13,9 @@ Tree.o : Tree.c Tree.h
 
 clean :
 		rm -f *.o run
+
+check : test1
+
+test1 :
+		./run < $(TESTS)test1.txt > $(TESTS)output.txt
+		diff $(TESTS)output.txt $(TESTS)test1_out.txt
