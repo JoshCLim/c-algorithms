@@ -95,8 +95,8 @@ void tree_show(Tree t) {
 }
 
 void tree_list(Tree t) {
-	printf("\n");
-    printf("  ");
+	//printf("\n");
+    //printf("  ");
     tree_list_formatted(t);
     printf("\n");
 }

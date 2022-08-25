@@ -25,10 +25,10 @@ int main(void) {
 
     char command = HELP;
 
-    printf("Enter command: ");
+    // printf("Enter command: ");
     while (fgets(input, MAX_LEN, stdin) != NULL) {
         if (!interpret_input(input, &command, &item)) {
-            printf("Enter command: ");
+            // printf("Enter command: ");
             continue;
         }
 
@@ -51,11 +51,11 @@ int main(void) {
             else if (item == 0) tree_list(tree);
         }
 
-        printf("\n");
-        printf("Enter command: ");
+        //printf("\n");
+        //printf("Enter command: ");
     }
 
-    printf("\n");
+    //printf("\n");
     return 0;
 }
 
