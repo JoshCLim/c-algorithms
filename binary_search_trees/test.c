@@ -35,6 +35,7 @@ int main(void) {
         if (command == HELP) {
             help();
         } else if (command == CREATE) {
+            tree = tree_delete(tree);
             tree = tree_create(item);
         } else if (command == DELETE) {
             tree = tree_delete(tree);
@@ -46,7 +47,8 @@ int main(void) {
             fputs(tree_search(tree, item) ? "true" : "false", stdout);
             printf("\n");
         } else if (command == SHOW) {
-            tree_show(tree);
+            if (item == 1) tree_show(tree);
+            else if (item == 0) tree_list(tree);
         }
 
         printf("\n");
@@ -67,12 +69,14 @@ void help(void) {
     printf("  insert    i <item>\n");
     printf("  remove    r <item>\n");
     printf("  search    s <item>\n");
-    printf("  print     p\n");
+    printf("  print     p <format: 0=list, 1=tree>\n");
     printf("==========\n");
     printf("\n");
 }
 
 bool interpret_input(char input[MAX_LEN], char *command, Item *item) {
+    bool invalid_input = false;
+
     // remove newline character
     int i = 0;
     while (input[i] != '\n' && input[i] != '\0' && i < MAX_LEN) {
@@ -83,7 +87,6 @@ bool interpret_input(char input[MAX_LEN], char *command, Item *item) {
     // read in input
     char *val0_str = NULL;
     char *val1_str = NULL;
-    bool item_needed = false;
 
     // read command in
     val0_str = strtok(input, " ");
@@ -91,31 +94,38 @@ bool interpret_input(char input[MAX_LEN], char *command, Item *item) {
         if (val0_str[1] != ' ' && val0_str[1] != '\0') {
             val0_str = NULL;
             *command = -1;
+            invalid_input = true;
         } else {
             *command = val0_str[0];
         }
     } else {
         *command = -1;
+        invalid_input = true;
     }
 
     if (
         *command == CREATE ||
         *command == INSERT ||
         *command == REMOVE ||
-        *command == SEARCH
+        *command == SEARCH ||
+        *command == SHOW
     ) {
-        item_needed = true;
         // read item in
         val1_str = strtok(NULL, " ");
         if (val1_str != NULL) {
             *item = atoi(val1_str);
         } else {
             *item = -1;
+            invalid_input = true;
         }
     }
 
-    if (val0_str == NULL || (val1_str == NULL && item_needed) || strtok(NULL, " ") != NULL) {
-        printf("Invalid command. Enter 'h' for help.\n");
+    if (*command == SHOW && (*item != 0 && *item != 1)) {
+        invalid_input = true;
+    }
+
+    if (invalid_input) {
+        printf("  Invalid command. Enter 'h' for help.\n\n");
         return false;
     }
 

@@ -21,3 +21,6 @@ bool tree_search(Tree, Item);
 
 // prints out the binary search tree
 void tree_show(Tree);
+
+// lists all values in binary tree in ascending order
+void tree_list(Tree);
