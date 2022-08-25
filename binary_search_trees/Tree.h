@@ -8,7 +8,7 @@ typedef int Item;
 Tree tree_create(Item);
 
 // delete the entire binary search tree
-void tree_delete(Tree);
+Tree tree_delete(Tree);
 
 // insert an element into the tree
 Tree tree_insert(Tree, Item);

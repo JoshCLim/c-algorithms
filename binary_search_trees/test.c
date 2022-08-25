@@ -37,7 +37,7 @@ int main(void) {
         } else if (command == CREATE) {
             tree = tree_create(item);
         } else if (command == DELETE) {
-            tree_delete(tree);
+            tree = tree_delete(tree);
         } else if (command == INSERT) {
             tree = tree_insert(tree, item);
         } else if (command == REMOVE) {
