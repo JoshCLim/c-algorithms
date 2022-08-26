@@ -6,6 +6,7 @@
 
 typedef struct Node {
     Item data;
+    int height;
     struct Node *left;
     struct Node *right;
 } Node;
@@ -31,6 +32,7 @@ Tree tree_create(Item item) {
     new_node->data = item;
     new_node->left = NULL;
     new_node->right = NULL;
+    new_node->height = 0;
 
     return new_node;
 }
@@ -50,13 +52,41 @@ Tree tree_insert(Tree t, Item item) {
         new_node->data = item;
         new_node->left = NULL;
         new_node->right = NULL;
+        new_node->height = 0;
 
         t = new_node;
-    } else if (item < t->data) { // else if curr value bigger than value, go left (and repeat/recurse)
+    } else if (item == t->data) {
+        return t;
+    }
+
+    if (item < t->data) { // else if curr value bigger than value, go left (and repeat/recurse)
         t->left = tree_insert(t->left, item);
+        t->height = t->left->height + 1;
     } else if (item > t->data) { // else if curr value smaller than value, go right (and repeat/recurse)
         t->right = tree_insert(t->right, item);
-    } // else if curr value == value, already in tree so do nothing
+        t->height = t->right->height + 1;
+    }
+
+    int l_height = 0;
+    if (t->left != NULL) {
+        l_height = t->left->height;
+    }
+    int r_height = 0;
+    if (t->right != NULL) {
+        r_height = t->right->height;
+    }
+
+    if (l_height - r_height > 1) {
+        if (item > t->left->data) {
+            t->left = rotate_left(t->left);
+        }
+        t = rotate_right(t);
+    } else if (l_height - r_height < -1) {
+        if (item > t->right->data) {
+            t->right = rotate_right(t->right);
+        }
+        t = rotate_left(t);
+    }
 
     return t;
 }
