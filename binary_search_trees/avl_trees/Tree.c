@@ -22,6 +22,8 @@ void tree_list(Tree);
 void tree_list_formatted(Tree);
 Tree delete_node(Tree);
 Item find_min_value(Tree);
+Tree rotate_right(Tree);
+Tree rotate_left(Tree);
 
 // ---- interface functions ---- //
 Tree tree_create(Item item) {
@@ -154,4 +156,36 @@ Item find_min_value(Tree t) {
     }
 
     return curr->data;
+}
+
+Tree rotate_right(Tree t) {
+    if (t == NULL) {
+        return t;
+    }
+
+    if (t->left == NULL) {
+        return t;
+    }
+
+    Tree left_child = t->left;
+    t->left = left_child->right;
+    left_child->right = t;
+
+    return left_child;
+}
+
+Tree rotate_left(Tree t) {
+    if (t == NULL) {
+        return t;
+    }
+    
+    if (t->right == NULL) {
+        return t;
+    }
+
+    Tree right_child = t->right;
+    t->right = right_child->left;
+    right_child->left = t;
+
+    return right_child;
 }
