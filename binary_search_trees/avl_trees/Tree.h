@@ -24,3 +24,6 @@ void tree_show(Tree);
 
 // lists all values in binary tree in ascending order
 void tree_list(Tree);
+
+// shows tree with height values too
+void tree_info(Tree);

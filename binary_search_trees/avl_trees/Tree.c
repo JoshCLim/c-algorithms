@@ -21,6 +21,8 @@ void tree_show(Tree);
 void tree_show_formatted(Tree, int);
 void tree_list(Tree);
 void tree_list_formatted(Tree);
+void tree_info(Tree);
+void tree_info_formatted(Tree, int);
 Tree delete_node(Tree);
 Item find_min_value(Tree);
 Tree rotate_right(Tree);
@@ -133,6 +135,14 @@ void tree_list(Tree t) {
     printf("\n");
 }
 
+void tree_info(Tree t) {
+    if (t == NULL) {
+
+    }
+    printf("\n");
+    tree_info_formatted(t, 0);
+}
+
 // ---- helper functions ---- //
 void tree_show_formatted(Tree t, int depth) {
     if (t != NULL) {
@@ -153,6 +163,18 @@ void tree_list_formatted(Tree t) {
 		printf("%d,", t->data);
 		tree_list_formatted(t->right);
 	}
+}
+
+void tree_info_formatted(Tree t, int depth) {
+    if (t != NULL) {
+        for (int i = 0; i < depth; i++) {
+            printf("   ");
+        }
+        printf("%d (%d)\n", t->data, t->height);
+
+        tree_info_formatted(t->left, depth + 1);
+        tree_info_formatted(t->right, depth + 1);
+    }
 }
 
 // deletes a node and returns a pointer to the node that should take its place

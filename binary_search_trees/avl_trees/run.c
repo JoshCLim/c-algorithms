@@ -58,6 +58,7 @@ int main(int argc, char *argv[]) {
         } else if (command == SHOW) {
             if (item == 1) tree_show(tree);
             else if (item == 0) tree_list(tree);
+            else if (item == 2) tree_info(tree);
         }
 
         if (mode != 0) printf("\n");
@@ -129,7 +130,7 @@ bool interpret_input(char input[MAX_LEN], char *command, Item *item) {
         }
     }
 
-    if (*command == SHOW && (*item != 0 && *item != 1)) {
+    if (*command == SHOW && (*item < 0 || *item > 2)) {
         invalid_input = true;
     }
 
