@@ -18,17 +18,26 @@
 void help(void);
 bool interpret_input(char input[MAX_LEN], char *tree, Item *item);
 
-int main(void) {
+int main(int argc, char *argv[]) {
+
+    if (argc != 2) {
+        printf("Usage: ./run <mode: 0=testing, 1=formatted>\n");
+        return 1;
+    }
+
+    int mode = atoi(argv[1]);
+    
     char input[MAX_LEN];
-    Tree tree;
+    Tree tree = NULL;
     Item item;
 
     char command = HELP;
 
-    // printf("Enter command: ");
+    if (mode != 0) printf("Enter command: ");
+
     while (fgets(input, MAX_LEN, stdin) != NULL) {
         if (!interpret_input(input, &command, &item)) {
-            // printf("Enter command: ");
+            if (mode != 0) printf("Enter command: ");
             continue;
         }
 
@@ -51,11 +60,11 @@ int main(void) {
             else if (item == 0) tree_list(tree);
         }
 
-        //printf("\n");
-        //printf("Enter command: ");
+        if (mode != 0) printf("\n");
+        if (mode != 0) printf("Enter command: ");
     }
 
-    //printf("\n");
+    if (mode != 0) printf("\n");
     return 0;
 }
 
