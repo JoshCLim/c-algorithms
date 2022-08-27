@@ -33,6 +33,8 @@ int main(int argc, char *argv[]) {
 
     char command = HELP;
 
+    if (mode != 0) help();
+
     if (mode != 0) printf("Enter command: ");
 
     while (fgets(input, MAX_LEN, stdin) != NULL) {
@@ -79,7 +81,7 @@ void help(void) {
     printf("  insert    i <item>\n");
     printf("  remove    r <item>\n");
     printf("  search    s <item>\n");
-    printf("  print     p <format: 0=list, 1=tree>\n");
+    printf("  print     p <format: 0=list, 1=tree, 2=info>\n");
     printf("==========\n");
     printf("\n");
 }
