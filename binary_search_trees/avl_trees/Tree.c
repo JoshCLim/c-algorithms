@@ -3,6 +3,11 @@
 #include <stdbool.h>
 
 #include "Tree.h"
+#include "logs/log.h"
+
+#define MAX_LEN 100
+
+char buffer[MAX_LEN];
 
 typedef struct Node {
     Item data;
@@ -38,6 +43,11 @@ Tree tree_create(Item item) {
     new_node->right = NULL;
     new_node->height = 0;
 
+    snprintf(buffer, MAX_LEN, "\n|------------------|\n");
+    log_output(buffer);
+    snprintf(buffer, MAX_LEN, "new AVL tree created with item %d\n", item);
+    log_output(buffer);
+
     return new_node;
 }
 
@@ -56,9 +66,15 @@ Tree tree_insert(Tree t, Item item) {
         new_node->data = item;
         new_node->left = NULL;
         new_node->right = NULL;
-        new_node->height = 0;
+        new_node->height = 1;
 
         t = new_node;
+
+        snprintf(buffer, MAX_LEN, "\ninserting %d\n", t->data);
+        log_output(buffer);
+
+        return t;
+
     } else if (item == t->data) {
         return t;
     }
@@ -82,12 +98,20 @@ Tree tree_insert(Tree t, Item item) {
         r_height = t->right->height;
     }
 
-    if (t->height == l_height + 1 && t->height - r_height > 1) {
+    snprintf(
+        buffer, 
+        MAX_LEN, 
+        "    data=%d, height=%d, l_height=%d, r_height=%d\n", 
+        t->data, t->height, l_height, r_height
+    );
+    log_output(buffer);
+
+    if (l_height - r_height > 1) {
         if (item > t->left->data) {
             t->left = rotate_left(t->left);
         }
         t = rotate_right(t);
-    } else if (t->height == r_height + 1 && t->height - l_height > 1) {
+    } else if (r_height - l_height > 1) {
         if (item > t->right->data) {
             t->right = rotate_right(t->right);
         }
@@ -144,6 +168,7 @@ void tree_info(Tree t) {
 
     }
     printf("\n");
+    printf("format: |-> [data] ([height]) ([balance])\n");
     tree_info_formatted(t, 0);
 }
 
@@ -170,14 +195,17 @@ void tree_list_formatted(Tree t) {
 }
 
 void tree_info_formatted(Tree t, int depth) {
+    for (int i = 0; i < depth; i++) {
+        printf("    ");
+    }
     if (t != NULL) {
-        for (int i = 0; i < depth; i++) {
-            printf("    ");
-        }
-        printf("|-> %d (%d)\n", t->data, t->height);
+        int balance = calculate_height(t->left) - calculate_height(t->right);
+        printf("|-> %d (%d) (%d)\n", t->data, t->height, balance);
 
         tree_info_formatted(t->left, depth + 1);
         tree_info_formatted(t->right, depth + 1);
+    } else {
+        printf("|-> []\n");
     }
 }
 
@@ -223,6 +251,9 @@ Tree rotate_right(Tree t) {
         return t;
     }
 
+    snprintf(buffer, MAX_LEN, "    rotating %d right\n", t->data);
+    log_output(buffer);
+
     Tree left_child = t->left;
     t->left = left_child->right;
     left_child->right = t;
@@ -230,6 +261,9 @@ Tree rotate_right(Tree t) {
     // calculate height of left child and t
     if (t->left != NULL) {
         t->left->height = calculate_height(t->left);
+    }
+    if (t->right != NULL) {
+        t->right->height = calculate_height(t->right);
     }
     t->height = calculate_height(t);
     left_child->height = calculate_height(left_child);
@@ -246,11 +280,17 @@ Tree rotate_left(Tree t) {
         return t;
     }
 
+    snprintf(buffer, MAX_LEN, "    rotating %d left\n", t->data);
+    log_output(buffer);
+
     Tree right_child = t->right;
     t->right = right_child->left;
     right_child->left = t;
 
     // calculate height of right child and t
+    if (t->left != NULL) {
+        t->left->height = calculate_height(t->left);
+    }
     if (t->right != NULL) {
         t->right->height = calculate_height(t->right);
     }
@@ -261,8 +301,12 @@ Tree rotate_left(Tree t) {
 }
 
 int calculate_height(Tree t) {
-    if (t->left == NULL && t->right == NULL) {
+    if (t == NULL) {
         return 0;
+    }
+
+    if (t->left == NULL && t->right == NULL) {
+        return 1;
     }
 
     int l_height = 0;
