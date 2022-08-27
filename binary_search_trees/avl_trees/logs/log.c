@@ -5,7 +5,7 @@
 int log_output(char *string) {
     FILE *log = fopen("./logs/log.txt", "a");
     
-    fprintf(log, string);
+    fprintf(log, "%s", string);
 
     fclose(log);
 
