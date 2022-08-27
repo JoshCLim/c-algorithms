@@ -1,9 +1,10 @@
 CC=gcc
 FLAGS=-Wall -Werror
 TESTS=./tests/
+LEAK_CHECK=leaks --atExit --
 
 run : run.o Tree.o log.o
-		$(CC) -o run run.o Tree.o ./logs/log.o
+		$(CC) -o run run.o Tree.o log.o
 
 run.o : run.c Tree.h
 		$(CC) $(FLAGS) -c run.c
@@ -25,3 +26,6 @@ test2 :
 		./run 0 < $(TESTS)test2.txt
 
 test : test1 test2
+
+leaks : 
+		$(LEAK_CHECK) ./run 1

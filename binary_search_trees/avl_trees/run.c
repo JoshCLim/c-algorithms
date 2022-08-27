@@ -68,6 +68,9 @@ int main(int argc, char *argv[]) {
     }
 
     if (mode != 0) printf("\n");
+
+    tree_delete(tree);
+
     return 0;
 }
 
