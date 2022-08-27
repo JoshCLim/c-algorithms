@@ -17,8 +17,11 @@ Tree.o : Tree.c Tree.h ./logs/log.h
 clean :
 		rm -f *.o run
 
-check : test1
-
 test1 :
-		./run 0 < $(TESTS)test1.txt > $(TESTS)output.txt
-		diff $(TESTS)output.txt $(TESTS)test1_out.txt
+		./run 0 < $(TESTS)test1.txt > $(TESTS)test1_out.txt
+		diff $(TESTS)test1_out.txt $(TESTS)test1_exp.txt
+
+test2 :
+		./run 0 < $(TESTS)test2.txt
+
+test : test1 test2
