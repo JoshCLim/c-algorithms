@@ -65,11 +65,13 @@ Tree tree_insert(Tree t, Item item) {
 
     if (item < t->data) { // else if curr value bigger than value, go left (and repeat/recurse)
         t->left = tree_insert(t->left, item);
-        t->height = t->left->height + 1;
+        // t->height = t->left->height + 1;
     } else if (item > t->data) { // else if curr value smaller than value, go right (and repeat/recurse)
         t->right = tree_insert(t->right, item);
-        t->height = t->right->height + 1;
+        // t->height = t->right->height + 1;
     }
+
+    t->height = calculate_height(t);
 
     int l_height = 0;
     if (t->left != NULL) {
@@ -80,12 +82,12 @@ Tree tree_insert(Tree t, Item item) {
         r_height = t->right->height;
     }
 
-    if (l_height - r_height > 1) {
+    if (t->height == l_height + 1 && t->height - r_height > 1) {
         if (item > t->left->data) {
             t->left = rotate_left(t->left);
         }
         t = rotate_right(t);
-    } else if (l_height - r_height < -1) {
+    } else if (t->height == r_height + 1 && t->height - l_height > 1) {
         if (item > t->right->data) {
             t->right = rotate_right(t->right);
         }
@@ -170,9 +172,9 @@ void tree_list_formatted(Tree t) {
 void tree_info_formatted(Tree t, int depth) {
     if (t != NULL) {
         for (int i = 0; i < depth; i++) {
-            printf("   ");
+            printf("    ");
         }
-        printf("%d (%d)\n", t->data, t->height);
+        printf("|-> %d (%d)\n", t->data, t->height);
 
         tree_info_formatted(t->left, depth + 1);
         tree_info_formatted(t->right, depth + 1);
@@ -259,6 +261,10 @@ Tree rotate_left(Tree t) {
 }
 
 int calculate_height(Tree t) {
+    if (t->left == NULL && t->right == NULL) {
+        return 0;
+    }
+
     int l_height = 0;
     int r_height = 0;
 
