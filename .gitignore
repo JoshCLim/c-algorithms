@@ -1,3 +1,6 @@
 /.vscode
 
 *.o
+
+# AVL trees
+/binary_search_trees/avl_trees/logs/log.txt
