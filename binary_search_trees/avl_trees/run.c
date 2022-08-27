@@ -4,6 +4,7 @@
 #include <stdbool.h>
 
 #include "Tree.h"
+#include "check.h"
 
 #define HELP 'h'
 #define CREATE 'c'
@@ -61,6 +62,14 @@ int main(int argc, char *argv[]) {
             if (item == 1) tree_show(tree);
             else if (item == 0) tree_list(tree);
             else if (item == 2) tree_info(tree);
+        }
+
+        // checks
+        if (mode == 0) {
+            if (check_balanced(tree) == false) {
+                printf("ERROR: Tree imbalance detected.\n");
+                tree_info(tree);
+            }
         }
 
         if (mode != 0) printf("\n");

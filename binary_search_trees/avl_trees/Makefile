@@ -3,8 +3,8 @@ FLAGS=-Wall -Werror
 TESTS=./tests/
 LEAK_CHECK=leaks --atExit --
 
-run : run.o Tree.o log.o
-		$(CC) -o run run.o Tree.o log.o
+run : run.o Tree.o log.o check.o
+		$(CC) -o run run.o Tree.o log.o check.o
 
 run.o : run.c Tree.h
 		$(CC) $(FLAGS) -c run.c
@@ -13,7 +13,10 @@ Tree.o : Tree.c Tree.h ./logs/log.h
 		$(CC) $(FLAGS) -c Tree.c
 
 ./logs/log.o : ./logs/log.c ./logs/log.h
-		$(CC) -Wall -c ./logs/log.c
+		$(CC) $(FLAGS) -c ./logs/log.c
+
+check.o : check.c check.h
+		$(CC) $(FLAGS) -c check.c
 
 clean :
 		rm -f *.o run
