@@ -27,6 +27,8 @@ Tree delete_node(Tree);
 Item find_min_value(Tree);
 Tree rotate_right(Tree);
 Tree rotate_left(Tree);
+int calculate_height(Tree);
+int max(int, int);
 
 // ---- interface functions ---- //
 Tree tree_create(Item item) {
@@ -223,6 +225,13 @@ Tree rotate_right(Tree t) {
     t->left = left_child->right;
     left_child->right = t;
 
+    // calculate height of left child and t
+    if (t->left != NULL) {
+        t->left->height = calculate_height(t->left);
+    }
+    t->height = calculate_height(t);
+    left_child->height = calculate_height(left_child);
+
     return left_child;
 }
 
@@ -239,5 +248,34 @@ Tree rotate_left(Tree t) {
     t->right = right_child->left;
     right_child->left = t;
 
+    // calculate height of right child and t
+    if (t->right != NULL) {
+        t->right->height = calculate_height(t->right);
+    }
+    t->height = calculate_height(t);
+    right_child->height = calculate_height(right_child);
+
     return right_child;
+}
+
+int calculate_height(Tree t) {
+    int l_height = 0;
+    int r_height = 0;
+
+    if (t->left != NULL) {
+        l_height = t->left->height;
+    }
+    
+    if (t->right != NULL) {
+        r_height = t->right->height;
+    }
+
+    return max(l_height, r_height) + 1;
+}
+
+int max(int num1, int num2) {
+    if (num1 > num2) {
+        return num1;
+    }
+    return num2;
 }
