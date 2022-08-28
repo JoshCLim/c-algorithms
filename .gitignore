@@ -1,0 +1,6 @@
+/.vscode
+
+*.o
+
+# AVL trees
+/avl_tree/logs/log.txt
