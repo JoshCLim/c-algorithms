@@ -4,8 +4,11 @@
 
 #include "Tree.h"
 #include "logs/log.h"
+#include "colour.h"
 
 #define MAX_LEN 100
+
+#define LEAF_HEIGHT 1
 
 char buffer[MAX_LEN];
 
@@ -41,7 +44,7 @@ Tree tree_create(Item item) {
     new_node->data = item;
     new_node->left = NULL;
     new_node->right = NULL;
-    new_node->height = 0;
+    new_node->height = LEAF_HEIGHT;
 
     snprintf(buffer, MAX_LEN, "\n|------------------|\n");
     log_output(buffer);
@@ -66,7 +69,7 @@ Tree tree_insert(Tree t, Item item) {
         new_node->data = item;
         new_node->left = NULL;
         new_node->right = NULL;
-        new_node->height = 1;
+        new_node->height = LEAF_HEIGHT;
 
         t = new_node;
 
@@ -98,6 +101,7 @@ Tree tree_insert(Tree t, Item item) {
         r_height = t->right->height;
     }
 
+    // log the current node
     snprintf(
         buffer, 
         MAX_LEN, 
@@ -112,7 +116,7 @@ Tree tree_insert(Tree t, Item item) {
         }
         t = rotate_right(t);
     } else if (r_height - l_height > 1) {
-        if (item > t->right->data) {
+        if (item < t->right->data) {
             t->right = rotate_right(t->right);
         }
         t = rotate_left(t);
@@ -168,7 +172,7 @@ void tree_info(Tree t) {
 
     }
     printf("\n");
-    printf("format: |-> [data] ([height]) ([balance])\n");
+    printf("format: |-> [data] [height] [balance]\n\n");
     tree_info_formatted(t, 0);
 }
 
@@ -200,12 +204,28 @@ void tree_info_formatted(Tree t, int depth) {
     }
     if (t != NULL) {
         int balance = calculate_height(t->left) - calculate_height(t->right);
-        printf("|-> %d (%d) (%d)\n", t->data, t->height, balance);
+
+        colour_black();
+        printf("|-> ");
+        colour_reset();
+        printf("%d (%d) (", t->data, t->height);
+        
+        if (balance > 1 || balance < -1) {
+            colour_red_b();
+        } else {
+            colour_green();
+        }
+        printf("%d", balance);
+        colour_reset();
+        printf(")\n");
 
         tree_info_formatted(t->left, depth + 1);
         tree_info_formatted(t->right, depth + 1);
     } else {
-        printf("|-> []\n");
+        colour_black();
+        printf("|-> []");
+        colour_reset();
+        printf("\n");
     }
 }
 
@@ -306,7 +326,7 @@ int calculate_height(Tree t) {
     }
 
     if (t->left == NULL && t->right == NULL) {
-        return 1;
+        return LEAF_HEIGHT;
     }
 
     int l_height = 0;

@@ -69,6 +69,7 @@ int main(int argc, char *argv[]) {
             if (check_balanced(tree) == false) {
                 printf("ERROR: Tree imbalance detected.\n");
                 tree_info(tree);
+                return 1;
             }
         }
 
