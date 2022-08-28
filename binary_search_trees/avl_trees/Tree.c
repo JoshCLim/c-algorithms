@@ -29,8 +29,8 @@ void tree_show(Tree);
 void tree_show_formatted(Tree, int);
 void tree_list(Tree);
 void tree_list_formatted(Tree);
-void tree_info(Tree);
-void tree_info_formatted(Tree, int);
+void tree_info(Tree, bool);
+void tree_info_formatted(Tree, int, bool);
 Tree delete_node(Tree);
 Item find_min_value(Tree);
 Tree rotate_right(Tree);
@@ -167,13 +167,13 @@ void tree_list(Tree t) {
     printf("\n");
 }
 
-void tree_info(Tree t) {
+void tree_info(Tree t, bool colour) {
     if (t == NULL) {
 
     }
     printf("\n");
     printf("format: |-> [data] [height] [balance]\n\n");
-    tree_info_formatted(t, 0);
+    tree_info_formatted(t, 0, colour);
 }
 
 // ---- helper functions ---- //
@@ -198,33 +198,36 @@ void tree_list_formatted(Tree t) {
 	}
 }
 
-void tree_info_formatted(Tree t, int depth) {
-    for (int i = 0; i < depth; i++) {
-        printf("    ");
-    }
+void tree_info_formatted(Tree t, int depth, bool colour) {
     if (t != NULL) {
+        for (int i = 0; i < depth; i++) {
+            printf("    ");
+        }
         int balance = calculate_height(t->left) - calculate_height(t->right);
 
-        colour_black();
+        colour_black(colour);
         printf("|-> ");
-        colour_reset();
+        colour_reset(colour);
         printf("%d (%d) (", t->data, t->height);
         
         if (balance > 1 || balance < -1) {
-            colour_red_b();
+            colour_red_b(colour);
         } else {
-            colour_green();
+            colour_green(colour);
         }
         printf("%d", balance);
-        colour_reset();
+        colour_reset(colour);
         printf(")\n");
 
-        tree_info_formatted(t->left, depth + 1);
-        tree_info_formatted(t->right, depth + 1);
+        tree_info_formatted(t->left, depth + 1, colour);
+        tree_info_formatted(t->right, depth + 1, colour);
     } else {
-        colour_black();
+        for (int i = 0; i < depth; i++) {
+            printf("    ");
+        }
+        colour_black(colour);
         printf("|-> []");
-        colour_reset();
+        colour_reset(colour);
         printf("\n");
     }
 }

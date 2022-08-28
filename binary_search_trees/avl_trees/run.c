@@ -61,14 +61,15 @@ int main(int argc, char *argv[]) {
         } else if (command == SHOW) {
             if (item == 1) tree_show(tree);
             else if (item == 0) tree_list(tree);
-            else if (item == 2) tree_info(tree);
+            else if (item == 2 && mode != 0) tree_info(tree, true);
+            else if (item == 2 && mode == 0) tree_info(tree, false);
         }
 
         // checks
         if (mode == 0) {
             if (check_balanced(tree) == false) {
                 printf("ERROR: Tree imbalance detected.\n");
-                tree_info(tree);
+                tree_info(tree, false);
                 return 1;
             }
         }

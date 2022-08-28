@@ -31,6 +31,12 @@ test1 :
 test2 :
 		./run 0 < $(TESTS)test2.txt
 
+test1000 :
+		./run 0 < $(TESTS)test1000.txt > $(TESTS)output.txt
+
+test10000 :
+		./run 0 < $(TESTS)test10000.txt > $(TESTS)output.txt
+
 test : test1 test2
 
 leaks : 

@@ -26,4 +26,4 @@ void tree_show(Tree);
 void tree_list(Tree);
 
 // shows tree with height values too
-void tree_info(Tree);
+void tree_info(Tree, bool);
