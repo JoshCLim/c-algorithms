@@ -80,6 +80,11 @@ void tree_show(Tree t, bool colour) {
 }
 
 void tree_list(Tree t) {
+    if (t == NULL) {
+        return;
+    }
+
+
     return;
 }
 
@@ -170,39 +175,48 @@ Tree tree_insert_here(Tree t, Item item, Tree l_child, Tree r_child) {
 
         Item promote_item = t->data[middle_index];
         
+        // node split
         Tree l_node = tree_create(t->data[0]);
+        l_node->child[0] = t->child[0];
         for (int i = 1; i < middle_index; i++) { // transfer data to left node
             tree_insert_here(l_node, t->data[i], t->child[i], t->child[i + 1]);
         }
 
         Tree r_node = tree_create(t->data[middle_index + 1]);
+        r_node->child[0] = t->child[middle_index + 1];
         for (int i = middle_index + 2; i < ORDER - 1; i++) {
             tree_insert_here(r_node, t->data[i], t->child[i], t->child[i + 1]);
         }
 
+        printf("    promoting %d\n", promote_item);
+
         Tree parent = t->parent;
+        Tree res = NULL;
         if (parent == NULL) {
             parent = tree_create(promote_item);
 
             parent->child[0] = l_node;
             parent->child[1] = r_node;
+
+            res = parent;
         } else {
-            parent = tree_insert_here(parent, promote_item, l_node, r_node);
+            res = tree_insert_here(parent, promote_item, l_node, r_node);
         }
         l_node->parent = parent;
         r_node->parent = parent;
 
         if (item < promote_item) {
-            tree_insert_here(l_node, item, NULL, NULL);
+            tree_insert_here(l_node, item, l_child, r_child);
         } else if (item > promote_item) {
-            tree_insert_here(r_node, item, NULL, NULL);
+            tree_insert_here(r_node, item, l_child, r_child);
         }
 
+        printf("    freeing %p\n", t);
         free(t);
 
-        printf("    promoting %d\n", promote_item);
+        printf("insert function returns %p\n", res);
 
-        return parent;
+        return res;
         // tree_insert_here(parent, promote_item, l_node, r_node);
     }
 }
