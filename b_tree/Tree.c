@@ -174,17 +174,11 @@ Tree tree_insert_here(Tree t, Item item, Tree l_child, Tree r_child) {
         for (int i = 1; i < middle_index; i++) { // transfer data to left node
             tree_insert_here(l_node, t->data[i], t->child[i], t->child[i + 1]);
         }
-        // for (int i = 0; i <= middle_index; i++) { // transfer children pointers to left node
-        //     l_node->child[i] = t->child[i];
-        // }
 
         Tree r_node = tree_create(t->data[middle_index + 1]);
         for (int i = middle_index + 2; i < ORDER - 1; i++) {
             tree_insert_here(r_node, t->data[i], t->child[i], t->child[i + 1]);
         }
-        // for (int i = middle_index + 1; i < ORDER; i++) {
-        //     r_node->child[i - (middle_index + 1)] = t->child[i];
-        // }
 
         Tree parent = t->parent;
         if (parent == NULL) {
@@ -192,6 +186,8 @@ Tree tree_insert_here(Tree t, Item item, Tree l_child, Tree r_child) {
 
             parent->child[0] = l_node;
             parent->child[1] = r_node;
+        } else {
+            parent = tree_insert_here(parent, promote_item, l_node, r_node);
         }
         l_node->parent = parent;
         r_node->parent = parent;
