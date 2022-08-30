@@ -23,7 +23,8 @@ void tree_list(Tree);
 // void tree_info(Tree, bool);
 
 Tree tree_insert_search(Tree, Item);
-Tree tree_insert_here(Tree t, Item item, Tree l_child, Tree r_child);
+Tree tree_insert_here(Tree, Item, Tree l_child, Tree r_child);
+void update_parent(Tree);
 void tree_show_d(Tree, int depth, bool colour);
 
 Tree tree_create(Item item) {
@@ -54,6 +55,10 @@ Tree tree_insert(Tree t, Item item) {
     // return tree_insert_here(insert_node, item, NULL, NULL);
     Tree res = tree_insert_here(insert_node, item, NULL, NULL);
 
+    if (res == NULL) {
+        return NULL;
+    }
+
     while (res->parent != NULL) {
         res = res->parent;
     }
@@ -83,8 +88,11 @@ void tree_list(Tree t) {
     if (t == NULL) {
         return;
     }
-
-    return;
+    tree_list(t->child[0]);
+    for (int i = 0; i < t->len; i++) {
+        printf("%d,", t->data[i]);
+        tree_list(t->child[i + 1]);
+    }
 }
 
 // ---- helper functions ---- //
@@ -168,16 +176,20 @@ Tree tree_insert_here(Tree t, Item item, Tree l_child, Tree r_child) {
     }
 
     // update all children's parent value
-    for (int i = 0; i < t->len + 1; i++) {
-        if (t->child[i] != NULL) {
-            t->child[i]->parent = t;
-        }
-    }
+    // for (int i = 0; i < t->len + 1; i++) {
+    //     if (t->child[i] != NULL) {
+    //         t->child[i]->parent = t;
+    //     }
+    // }
+    update_parent(t);
 
     // if node has less items than ORDER, no split needed so return
     if (t->len < ORDER) {
         return t;
     }
+
+    // logs
+    printf("    splitting %p\n", t);
 
     // if ORDER elements (or greater), node split
     int middle_index = (ORDER - 1) / 2;
@@ -197,6 +209,9 @@ Tree tree_insert_here(Tree t, Item item, Tree l_child, Tree r_child) {
         tree_insert_here(r_node, t->data[i], t->child[i], t->child[i + 1]);
     }
 
+    update_parent(l_node);
+    update_parent(r_node);
+
     Tree res = NULL;
     // if current node is root, create new node
     if (t->parent == NULL) {
@@ -208,15 +223,24 @@ Tree tree_insert_here(Tree t, Item item, Tree l_child, Tree r_child) {
         l_node->parent = parent;
         r_node->parent = parent;
 
-        free(t);
 
         res = parent;
 
     } else { // split and insert into parent
         res = tree_insert_here(t->parent, promote_item, l_node, r_node);
     }
-    
+
+    free(t);
+
     return res;
+}
+
+void update_parent(Tree t) {
+    for (int i = 0; i < t->len + 1; i++) {
+        if (t->child[i] != NULL) {
+            t->child[i]->parent = t;
+        }
+    }
 }
 
 void tree_show_d(Tree t, int depth, bool colour) {
@@ -235,6 +259,7 @@ void tree_show_d(Tree t, int depth, bool colour) {
         colour_black(colour);
         printf("|-> ");
         colour_reset(colour);
+
         printf("[");
         for (int i = 0; i < t->len; i++) {
             printf("%d", t->data[i]);
@@ -249,12 +274,13 @@ void tree_show_d(Tree t, int depth, bool colour) {
             }
         }
         printf("] ");
+
         colour_black(colour);
-        printf("%p ", t);
+        printf("%p ", t); // node's current address
         colour_reset(colour);
-        printf("(len: %d)", t->len);
+        printf("(len: %d)", t->len); // node's length
         colour_black(colour);
-        printf(" (parent: %p)", t->parent);
+        printf(" (parent: %p)", t->parent); // node's parent
         colour_reset(colour);
         printf("\n");
 
