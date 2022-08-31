@@ -63,8 +63,8 @@ Tree tree_insert(Tree t, Item item) {
         res = res->parent;
     }
 
-    printf("\n");
-    tree_show(res, true);
+    // printf("\n");
+    // tree_show(res, true);
     return res;
 }
 
@@ -108,10 +108,10 @@ Tree tree_insert_search(Tree t, Item item) {
 
     int i = 0;
     while (t->data[i] < item && i < ORDER - 1 && i < t->len) {
-        printf("%d < %d\n", t->data[i], item);
+        // printf("%d < %d\n", t->data[i], item);
         i++;
     }
-    printf("%d\n", i);
+    // printf("%d\n", i);
 
     if (t->data[i] == item) {
         return t;
@@ -141,7 +141,7 @@ Tree tree_insert_here(Tree t, Item item, Tree l_child, Tree r_child) {
     }
 
     // logging action
-    printf("insert %d into %p { length: %d }\n", item, t, t->len);
+    // printf("insert %d into %p { length: %d }\n", item, t, t->len);
 
     // check if item already in node and return
     for (int i = 0; i < t->len; i++) {
