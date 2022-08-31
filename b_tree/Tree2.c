@@ -71,8 +71,22 @@ Tree tree_insert(Tree t, Item item) {
 Tree tree_remove(Tree t, Item item) {
     return NULL;
 }
+
 bool tree_search(Tree t, Item item) {
-    return false;
+    if (t == NULL) {
+        return false;
+    }
+
+    int i = 0;
+    while (t->data[i] < item && i < ORDER - 1 && i < t->len) {
+        i++;
+    }
+
+    if (t->data[i] == item) {
+        return true;
+    }
+
+    return tree_search(t->child[i], item);
 }
 
 
@@ -146,7 +160,7 @@ Tree tree_insert_here(Tree t, Item item, Tree l_child, Tree r_child) {
     // check if item already in node and return
     for (int i = 0; i < t->len; i++) {
         if (t->data[i] == item) {
-            printf("    %d already in %p!\n", item, t);
+            // printf("    %d already in %p!\n", item, t);
             return t;
         }
     }
@@ -157,7 +171,7 @@ Tree tree_insert_here(Tree t, Item item, Tree l_child, Tree r_child) {
         i++;
     }
 
-    printf("    inserting into index: %d\n", i);
+    // printf("    inserting into index: %d\n", i);
 
     t->len++; // add one to node length
 
@@ -176,11 +190,6 @@ Tree tree_insert_here(Tree t, Item item, Tree l_child, Tree r_child) {
     }
 
     // update all children's parent value
-    // for (int i = 0; i < t->len + 1; i++) {
-    //     if (t->child[i] != NULL) {
-    //         t->child[i]->parent = t;
-    //     }
-    // }
     update_parent(t);
 
     // if node has less items than ORDER, no split needed so return
@@ -188,8 +197,7 @@ Tree tree_insert_here(Tree t, Item item, Tree l_child, Tree r_child) {
         return t;
     }
 
-    // logs
-    printf("    splitting %p\n", t);
+    // printf("    splitting %p\n", t);
 
     // if ORDER elements (or greater), node split
     int middle_index = (ORDER - 1) / 2;
@@ -235,6 +243,7 @@ Tree tree_insert_here(Tree t, Item item, Tree l_child, Tree r_child) {
     return res;
 }
 
+// for a node, make all its children have their parent property equal to that node
 void update_parent(Tree t) {
     for (int i = 0; i < t->len + 1; i++) {
         if (t->child[i] != NULL) {
