@@ -26,15 +26,17 @@ int main(int argc, char* argv[]) {
 }
 
 void insertion_sort(Item a[], int lo, int hi) {
-    for (int i = lo + 1; i <= hi; i++) {
-        int value_to_insert = a[i];
+    int i, j, value_to_insert;
+    
+    for (i = lo + 1; i <= hi; i++) {
+        value_to_insert = a[i];
 
-        for (int j = i; j > lo; j--) {
+        for (j = i; j > lo; j--) {
             if (value_to_insert > a[j - 1]) {
-                a[j] = value_to_insert;
                 break;
             }
-            a[j] = a[j - 1];
+            a[j] = a[j - 1]; // shift value right
         }
+        a[j] = value_to_insert;
     }
 }
