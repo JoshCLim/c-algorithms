@@ -27,7 +27,7 @@ int main(int argc, char* argv[]) {
 
 void insertion_sort(Item a[], int lo, int hi) {
     int i, j, value_to_insert;
-    
+
     for (i = lo + 1; i <= hi; i++) {
         value_to_insert = a[i];
 
