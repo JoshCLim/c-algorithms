@@ -1,0 +1,26 @@
+bubble_sort => 10000 inputs
+
+real	0m0.265s
+user	0m0.260s
+sys	0m0.003s
+
+
+selection_sort => 10000 inputs
+
+real	0m0.390s
+user	0m0.112s
+sys	0m0.003s
+
+
+insertion_sort => 10000 inputs
+
+real	0m0.316s
+user	0m0.068s
+sys	0m0.003s
+
+
+merge_sort => 10000 inputs
+
+real	0m0.005s
+user	0m0.003s
+sys	0m0.001s

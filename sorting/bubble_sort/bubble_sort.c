@@ -1,6 +1,6 @@
 #include <stdio.h>
 
-#define MAX 1000
+#define MAX 10000
 #define TRUE 1
 #define FALSE 0
 
