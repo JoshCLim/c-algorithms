@@ -15,6 +15,8 @@ int main(int argc, char* argv[]) {
         inputs[length++] = buffer;
     }
 
+    printf("length: %d\n\n", length);
+
     selection_sort(inputs, 0, length - 1);
 
     for (int i = 0; i < length; i++) {
@@ -25,10 +27,10 @@ int main(int argc, char* argv[]) {
 }
 
 void selection_sort(Item a[], int lo, int hi) {
-    for (int i = lo + 1; i <= hi; i++) {
+    for (int i = lo; i <= hi; i++) {
         // find min
         int min = i;
-        for (int j = i; j < hi; j++) {
+        for (int j = i + 1; j <= hi; j++) {
             if (a[j] < a[min]) {
                 min = j;
             }
@@ -36,7 +38,7 @@ void selection_sort(Item a[], int lo, int hi) {
 
         // swap a[i-1] and a[min]
         Item tmp = a[min];
-        a[min] = a[i - 1];
-        a[i - 1] = tmp;
+        a[min] = a[i];
+        a[i] = tmp;
     }
 }
