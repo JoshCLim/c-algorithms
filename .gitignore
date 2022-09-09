@@ -4,5 +4,7 @@
 
 *.dSYM
 
+.DS_Store
+
 # AVL trees
 /avl_tree/logs/log.txt
