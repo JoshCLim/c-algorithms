@@ -2,5 +2,7 @@
 
 *.o
 
+*.dSYM
+
 # AVL trees
 /avl_tree/logs/log.txt
