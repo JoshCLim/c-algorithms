@@ -1,8 +1,16 @@
+#ifndef TREE_H
+#define TREE_H
+
 #include <stdbool.h>
 
-typedef struct Node *Tree;
-
 typedef int Item;
+
+typedef struct Node {
+    Item data;
+    struct Node *left;
+    struct Node *right;
+} Node;
+typedef Node *Tree;
 
 // create the binary search tree with inital item
 Tree tree_create(Item);
@@ -24,3 +32,5 @@ void tree_show(Tree);
 
 // lists all values in binary tree in ascending order
 void tree_list(Tree);
+
+#endif
