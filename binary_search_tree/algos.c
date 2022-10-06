@@ -45,8 +45,22 @@ int tree_height(Tree t) {
 // Tree tree_insert_at_root(Tree, Item);
 
 // traversals
-void tree_print_inorder(Tree t) {}
-void tree_print_preorder(Tree t) {}
+void tree_print_inorder(Tree t) {
+    if (t == NULL) {
+        return;
+    }
+    tree_print_inorder(t->left);
+    printf("%d, ", t->data);
+    tree_print_inorder(t->right);
+}
+void tree_print_preorder(Tree t) {
+    if (t == NULL) {
+        return;
+    }
+    printf("%d, ", t->data);
+    tree_print_preorder(t->left);
+    tree_print_preorder(t->right);
+}
 void tree_print_postorder(Tree t) {
     if (t == NULL) {
         return;
