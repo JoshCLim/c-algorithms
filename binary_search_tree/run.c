@@ -5,6 +5,7 @@
 
 #include "Tree.h"
 #include "BSTree.h"
+#include "algos.h"
 
 #define HELP 'h'
 #define CREATE 'c'
@@ -60,6 +61,7 @@ int main(int argc, char *argv[]) {
             if (item == 2) tree_show(tree);
             else if (item == 0) tree_list(tree);
             else if (item == 1) printBSTree(tree);
+            else if (item == 3) tree_print_postorder(tree);
         }
 
         if (mode != 0) printf("\n");
@@ -131,7 +133,7 @@ bool interpret_input(char input[MAX_LEN], char *command, Item *item) {
         }
     }
 
-    if (*command == SHOW && (*item != 0 && *item != 1)) {
+    if (*command == SHOW && (*item < 0 || *item > 3)) {
         invalid_input = true;
     }
 
