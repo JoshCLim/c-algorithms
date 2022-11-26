@@ -14,6 +14,8 @@ int tree_num_nodes(Tree);
 
 // returns height of the tree
 int tree_height(Tree);
+// checks if a tree is height balanced
+bool tree_is_height_balanced(Tree);
 
 // rotate a node left/right
 Tree tree_rotate_right(Tree);
