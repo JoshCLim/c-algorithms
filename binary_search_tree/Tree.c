@@ -4,12 +4,6 @@
 
 #include "Tree.h"
 
-typedef struct Node {
-    Item data;
-    struct Node *left;
-    struct Node *right;
-} Node;
-
 // ---- function prototypes ---- //
 Tree tree_create(Item);
 Tree tree_delete(Tree);

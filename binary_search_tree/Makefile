@@ -2,14 +2,20 @@ CC=gcc
 FLAGS=-Wall -Werror
 TESTS=./tests/
 
-run : run.o Tree.o
-		$(CC) -o run run.o Tree.o
+run : run.o Tree.o BSTree.o algos.o
+		$(CC) -o run run.o Tree.o BSTree.o algos.o
 
-run.o : run.c Tree.h
+run.o : run.c Tree.h BSTree.h
 		$(CC) $(FLAGS) -c run.c
 
 Tree.o : Tree.c Tree.h
 		$(CC) $(FLAGS) -c Tree.c
+
+BSTree.o : BSTree.c BSTree.h
+		$(CC) $(FLAGS) -c BSTree.c
+
+algos.o : algos.c algos.h
+		$(CC) $(FLAGS) -c algos.c
 
 clean :
 		rm -f *.o run

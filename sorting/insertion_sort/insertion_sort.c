@@ -1,6 +1,6 @@
 #include <stdio.h>
 
-#define MAX 10000
+#define MAX 1000000
 
 typedef int Item;
 
