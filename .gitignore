@@ -8,3 +8,6 @@
 
 # AVL trees
 /avl_tree/logs/log.txt
+
+/sorting/bubble_sort/sorted.txt
+/sorting/insertion_sort/sorted.txt
